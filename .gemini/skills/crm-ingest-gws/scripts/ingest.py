@@ -1753,6 +1753,8 @@ class DriveMeetingNotesResolver:
 
     @staticmethod
     def _needs_drive_search(event):
+        if event.get("source_type") == "whatsapp":
+            return False
         if event.get("source_type") == "calendar":
             return True
         combined = " ".join(

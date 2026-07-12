@@ -36,3 +36,4 @@ htmlcov/
 
 # Ignore the entire nested data directory
 crm-data/
+tmp/
