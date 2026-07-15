@@ -123,6 +123,10 @@ NOTE_SEARCH_STOPWORDS = {
     "update", "with", "would", "your",
 }
 
+GWS_COMMAND_TIMEOUT_SECONDS = 60
+GWS_DRIVE_LOOKUP_TIMEOUT_SECONDS = 20
+GWS_DOCS_LOOKUP_TIMEOUT_SECONDS = 30
+
 
 def get_crm_data_path():
     env_override = os.getenv("CRM_DATA_PATH")
@@ -291,9 +295,14 @@ def save_json(path, payload):
         handle.write("\n")
 
 
-def run_gws(args):
+def run_gws(args, timeout_seconds=GWS_COMMAND_TIMEOUT_SECONDS):
     try:
-        result = subprocess.run(args, capture_output=True, text=True)
+        result = subprocess.run(args, capture_output=True, text=True, timeout=timeout_seconds)
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(
+            f"gws command timed out after {int(timeout_seconds)} seconds for {' '.join(args)}"
+        ) from exc
+    try:
         if result.returncode != 0:
             error_text = result.stderr.strip() or result.stdout.strip() or "unknown gws error"
             raise RuntimeError(error_text)
@@ -998,7 +1007,8 @@ class SourceHarvester:
                         "fields": "files(id,name,mimeType,modifiedTime,webViewLink)",
                     }
                 ),
-            ]
+            ],
+            timeout_seconds=GWS_DRIVE_LOOKUP_TIMEOUT_SECONDS,
         )
         return payload.get("files", []) if isinstance(payload, dict) else []
 
@@ -1619,7 +1629,8 @@ class DriveMeetingNotesResolver:
                 "get",
                 "--params",
                 json.dumps({"fileId": file_id, "supportsAllDrives": True}),
-            ]
+            ],
+            timeout_seconds=GWS_DRIVE_LOOKUP_TIMEOUT_SECONDS,
         )
         self.metadata_cache[file_id] = payload if isinstance(payload, dict) else {}
         return self.metadata_cache[file_id]
@@ -1637,7 +1648,8 @@ class DriveMeetingNotesResolver:
                 "get",
                 "--params",
                 json.dumps({"documentId": document_id}),
-            ]
+            ],
+            timeout_seconds=GWS_DOCS_LOOKUP_TIMEOUT_SECONDS,
         )
         text = self._extract_doc_text(payload if isinstance(payload, dict) else {})
         self.doc_cache[document_id] = text
