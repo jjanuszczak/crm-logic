@@ -67,7 +67,7 @@ Deliverables:
 
 Key implementation areas:
 - `templates/`
-- skill docs under `.gemini/skills/`
+- skill docs under `.agents/skills/`
 - schema assumptions in Python scripts
 
 Exit criteria:

@@ -52,7 +52,7 @@ def generate_index(directory=None):
     if directory is None:
         directory = get_crm_data_path()
     
-    index_file = "GEMINI_INDEX.md"
+    index_file = "index.md"
     index_path = os.path.join(directory, index_file)
 
     # Open the index file in the target directory so running the script

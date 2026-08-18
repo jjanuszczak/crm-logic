@@ -61,7 +61,7 @@ class SourceArtifactManagerTests(unittest.TestCase):
 
     def load_manager(self):
         return load_module(
-            REPO_ROOT / ".gemini/skills/crm-source-artifact-manager/scripts/source_artifact_manager.py",
+            REPO_ROOT / ".agents/skills/crm-source-artifact-manager/scripts/source_artifact_manager.py",
             "crm_source_artifact_manager_test",
             self.crm_data_path,
         )

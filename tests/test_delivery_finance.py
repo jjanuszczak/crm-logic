@@ -63,14 +63,14 @@ class DeliveryFinanceTests(unittest.TestCase):
     def load_finance_manager(self):
         with patch.dict(os.environ, {"CRM_DATA_PATH": str(self.crm_data_path)}, clear=False):
             return load_module(
-                REPO_ROOT / ".gemini/skills/crm-finance-manager/scripts/finance_manager.py",
+                REPO_ROOT / ".agents/skills/crm-finance-manager/scripts/finance_manager.py",
                 "crm_finance_manager_test",
             )
 
     def load_dashboard_module(self):
         with patch.dict(os.environ, {"CRM_DATA_PATH": str(self.crm_data_path)}, clear=False):
             return load_module(
-                REPO_ROOT / ".gemini/skills/update-dashboard/scripts/update-dashboard.py",
+                REPO_ROOT / ".agents/skills/update-dashboard/scripts/update-dashboard.py",
                 "crm_update_dashboard_test",
             )
 

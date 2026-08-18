@@ -385,13 +385,13 @@ Reason:
 
 The repo should define workflow layers in three places:
 
-1. `.gemini/skills/*/SKILL.md`
+1. `.agents/skills/*/SKILL.md`
    - user-facing workflow contract
    - when to use the workflow
    - review sequence
    - policy and judgment boundaries
 
-2. `.gemini/skills/<skill>/scripts/` or shared `scripts/`
+2. `.agents/skills/<skill>/scripts/` or shared `scripts/`
    - canonical implementation for the workflow when code exists
    - manager-style workflows should prefer a skill-owned script when the workflow is large enough to deserve a stable surface
    - narrower compatibility wrappers may still exist in top-level `scripts/` where needed
@@ -402,7 +402,7 @@ The repo should define workflow layers in three places:
    - source of truth before workflow code exists
 
 For this enhancement specifically:
-- workflow definitions are now being added under `.gemini/skills/`
+- workflow definitions are now being added under `.agents/skills/`
 - schema and templates live in `docs/schema-spec.md` and `templates/`
 - implementation code for these new workflows does not exist yet and will be added later in manager scripts
 

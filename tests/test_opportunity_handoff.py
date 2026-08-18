@@ -59,7 +59,7 @@ class OpportunityHandoffTests(unittest.TestCase):
 
     def load_opportunity_manager(self):
         return load_module(
-            REPO_ROOT / ".gemini/skills/crm-opportunity-manager/scripts/opportunity_manager.py",
+            REPO_ROOT / ".agents/skills/crm-opportunity-manager/scripts/opportunity_manager.py",
             "crm_opportunity_manager_test",
             self.crm_data_path,
         )

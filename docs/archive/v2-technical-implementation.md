@@ -60,7 +60,7 @@ New commands to support the "Inbox" workflow:
 - `refresh-intelligence`: Forced run of the engine and dashboard update.
 
 ## 6. Integration Hook
-Update `.gemini/skills/update-dashboard/scripts/update-dashboard.py` to:
+Update `.agents/skills/update-dashboard/scripts/update-dashboard.py` to:
 1. Run standard indexing.
 2. Call `intelligence-engine.py`.
 3. Output the final `INTELLIGENCE.md` in the `CRM_DATA_PATH`.

@@ -6,7 +6,7 @@ import sys
 SKILL_SCRIPT_PATH = os.path.abspath(
     os.path.join(
         os.path.dirname(__file__),
-        "../.gemini/skills/crm-finance-manager/scripts/finance_manager.py",
+        "../.agents/skills/crm-finance-manager/scripts/finance_manager.py",
     )
 )
 

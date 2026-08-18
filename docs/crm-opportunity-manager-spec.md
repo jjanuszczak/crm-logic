@@ -308,16 +308,16 @@ If the repo wants stricter stage semantics later, they should be defined in sche
 Recommended shape:
 
 - top-level skill:
-  - `.gemini/skills/crm-opportunity-manager/SKILL.md`
+  - `.agents/skills/crm-opportunity-manager/SKILL.md`
 - canonical implementation script:
-  - `.gemini/skills/crm-opportunity-manager/scripts/opportunity_manager.py`
+  - `.agents/skills/crm-opportunity-manager/scripts/opportunity_manager.py`
 - compatibility wrapper if needed:
   - `scripts/opportunity_manager.py`
 - supporting references:
-  - `.gemini/skills/crm-opportunity-manager/references/lifecycle.md`
-  - `.gemini/skills/crm-opportunity-manager/references/cli-patterns.md`
-  - `.gemini/skills/crm-opportunity-manager/references/close-rules.md`
-  - `.gemini/skills/crm-opportunity-manager/references/stakeholder-model.md`
+  - `.agents/skills/crm-opportunity-manager/references/lifecycle.md`
+  - `.agents/skills/crm-opportunity-manager/references/cli-patterns.md`
+  - `.agents/skills/crm-opportunity-manager/references/close-rules.md`
+  - `.agents/skills/crm-opportunity-manager/references/stakeholder-model.md`
 
 ## CLI Surface
 

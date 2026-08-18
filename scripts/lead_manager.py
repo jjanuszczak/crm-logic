@@ -6,7 +6,7 @@ import sys
 SKILL_SCRIPT_PATH = os.path.abspath(
     os.path.join(
         os.path.dirname(__file__),
-        "../.gemini/skills/crm-lead-manager/scripts/lead_manager.py",
+        "../.agents/skills/crm-lead-manager/scripts/lead_manager.py",
     )
 )
 

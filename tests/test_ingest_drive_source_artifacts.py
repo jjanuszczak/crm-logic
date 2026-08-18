@@ -23,7 +23,7 @@ def load_ingest_module(crm_data_path: Path):
     global _MODULE_COUNTER
     _MODULE_COUNTER += 1
     module_name = f"crm_ingest_drive_source_artifacts_{_MODULE_COUNTER}"
-    module_path = REPO_ROOT / ".gemini/skills/crm-ingest-gws/scripts/ingest.py"
+    module_path = REPO_ROOT / ".agents/skills/crm-ingest-gws/scripts/ingest.py"
     with patch.dict(os.environ, {"CRM_DATA_PATH": str(crm_data_path)}, clear=False):
         spec = importlib.util.spec_from_file_location(module_name, module_path)
         module = importlib.util.module_from_spec(spec)

@@ -113,7 +113,7 @@ Important current rules:
 ### Prerequisites
 
 - Python 3
-- Gemini CLI or another compatible coding agent runner
+- A compatible coding agent runner
 - `gws` CLI authenticated to the relevant Google Workspace account
 - local `codex` CLI if you want the optional Granola post-ingest pass to run automatically
 - local `wacli` if you want the optional WhatsApp post-ingest pass to run automatically
@@ -129,7 +129,7 @@ CRM_DATA_PATH=./crm-data
 ### Initialize a fresh vault
 
 ```bash
-python3 .gemini/skills/init-crm-data/scripts/init-vault.py crm-data
+python3 .agents/skills/init-crm-data/scripts/init-vault.py crm-data
 ```
 
 ### Most useful commands
@@ -137,31 +137,31 @@ python3 .gemini/skills/init-crm-data/scripts/init-vault.py crm-data
 Sync Workspace:
 
 ```bash
-CRM_DATA_PATH=./crm-data python3 .gemini/skills/crm-ingest-gws/scripts/ingest.py
+CRM_DATA_PATH=./crm-data python3 .agents/skills/crm-ingest-gws/scripts/ingest.py
 ```
 
 Sync Workspace but skip the Granola post-pass:
 
 ```bash
-CRM_DATA_PATH=./crm-data python3 .gemini/skills/crm-ingest-gws/scripts/ingest.py --skip-granola
+CRM_DATA_PATH=./crm-data python3 .agents/skills/crm-ingest-gws/scripts/ingest.py --skip-granola
 ```
 
 Sync Workspace but skip the WhatsApp post-pass:
 
 ```bash
-CRM_DATA_PATH=./crm-data python3 .gemini/skills/crm-ingest-gws/scripts/ingest.py --skip-whatsapp
+CRM_DATA_PATH=./crm-data python3 .agents/skills/crm-ingest-gws/scripts/ingest.py --skip-whatsapp
 ```
 
 Refresh dashboard and derived views:
 
 ```bash
-CRM_DATA_PATH=./crm-data python3 .gemini/skills/update-dashboard/scripts/update-dashboard.py --skip-followups --skip-commit
+CRM_DATA_PATH=./crm-data python3 .agents/skills/update-dashboard/scripts/update-dashboard.py --skip-followups --skip-commit
 ```
 
 Create a lead:
 
 ```bash
-python3 .gemini/skills/crm-lead-manager/scripts/lead_manager.py create --name "Example Lead" --status new
+python3 .agents/skills/crm-lead-manager/scripts/lead_manager.py create --name "Example Lead" --status new
 ```
 
 Process an Inbox item:
@@ -243,7 +243,7 @@ python3 scripts/task_manager.py set-status "Tasks/2026/04/2026-04-10-follow-up-w
 Sync CRM tasks to Google Tasks:
 
 ```bash
-python3 .gemini/skills/crm-sync-google-tasks/scripts/sync-tasks.py
+python3 .agents/skills/crm-sync-google-tasks/scripts/sync-tasks.py
 ```
 
 Run the local CRM web dashboard:
@@ -317,7 +317,7 @@ Codex desktop operational note:
 - For the recurring CRM daily automation, use the approved unrestricted command form:
 
 ```bash
-/bin/zsh -lc 'set -a; [ -f .env ] && . ./.env; set +a; CRM_DATA_PATH=${CRM_DATA_PATH:-./crm-data} python3 .gemini/skills/crm-ingest-gws/scripts/ingest.py --autonomous --auto-tier 1'
+/bin/zsh -lc 'set -a; [ -f .env ] && . ./.env; set +a; CRM_DATA_PATH=${CRM_DATA_PATH:-./crm-data} python3 .agents/skills/crm-ingest-gws/scripts/ingest.py --autonomous --auto-tier 1'
 ```
 
 - If a sandboxed attempt hits a Google API network error, rerun that command with escalation before treating Workspace ingest as blocked.
@@ -455,23 +455,23 @@ The most relevant skills for real use are:
 - `matchmaker`
 - `manage-intelligence`
 
-Skill definitions live in `.gemini/skills/*/SKILL.md`.
+Skill definitions live in `.agents/skills/*/SKILL.md`.
 
 ## Important Scripts
 
-- [ingest.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/crm-ingest-gws/scripts/ingest.py#L1): Gmail/Calendar ingestion and staged CRM decisioning
-- [update-dashboard.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/update-dashboard/scripts/update-dashboard.py#L1): dashboard refresh and downstream generation
+- [ingest.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/crm-ingest-gws/scripts/ingest.py#L1): Gmail/Calendar ingestion and staged CRM decisioning
+- [update-dashboard.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/update-dashboard/scripts/update-dashboard.py#L1): dashboard refresh and downstream generation
 - [organization_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/organization_manager.py#L1): organization creation
 - [account_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/account_manager.py#L1): account creation and update
 - [contact_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/contact_manager.py#L1): contact creation and update
 - [deal_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/deal_manager.py#L1): deal inventory creation and update
-- [lead_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/crm-lead-manager/scripts/lead_manager.py#L1): lead lifecycle and conversion
-- [opportunity_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/crm-opportunity-manager/scripts/opportunity_manager.py#L1): opportunity lifecycle and execution workflows
-- [engagement_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/crm-engagement-manager/scripts/engagement_manager.py#L1): engagement lifecycle and workstream workflows
-- [finance_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/crm-finance-manager/scripts/finance_manager.py#L1): retainers, invoices, payments, and finance review
-- [source_artifact_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/crm-source-artifact-manager/scripts/source_artifact_manager.py#L1): source artifact creation, linking, and Readwise import
+- [lead_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/crm-lead-manager/scripts/lead_manager.py#L1): lead lifecycle and conversion
+- [opportunity_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/crm-opportunity-manager/scripts/opportunity_manager.py#L1): opportunity lifecycle and execution workflows
+- [engagement_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/crm-engagement-manager/scripts/engagement_manager.py#L1): engagement lifecycle and workstream workflows
+- [finance_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/crm-finance-manager/scripts/finance_manager.py#L1): retainers, invoices, payments, and finance review
+- [source_artifact_manager.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/crm-source-artifact-manager/scripts/source_artifact_manager.py#L1): source artifact creation, linking, and Readwise import
 - [task_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/task_manager.py#L1): task creation, update, and status management
-- [sync-tasks.py](/Users/johnjanuszczak/Projects/crm-logic/.gemini/skills/crm-sync-google-tasks/scripts/sync-tasks.py#L1): CRM-to-Google Tasks sync using persisted Google task identifiers
+- [sync-tasks.py](/Users/johnjanuszczak/Projects/crm-logic/.agents/skills/crm-sync-google-tasks/scripts/sync-tasks.py#L1): CRM-to-Google Tasks sync using persisted Google task identifiers
 - [inbox_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/inbox_manager.py#L1): Inbox creation and processing
 - [navigation_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/navigation_manager.py#L1): vault root `index.md` generation and `log.md` appends
 - [record_manager.py](/Users/johnjanuszczak/Projects/crm-logic/scripts/record_manager.py#L1): first-class Note and Activity creation

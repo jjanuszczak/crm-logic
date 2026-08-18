@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 
 def load_ingest_module():
-    module_path = Path(__file__).resolve().parents[1] / ".gemini/skills/crm-ingest-gws/scripts/ingest.py"
+    module_path = Path(__file__).resolve().parents[1] / ".agents/skills/crm-ingest-gws/scripts/ingest.py"
     spec = importlib.util.spec_from_file_location("crm_ingest_gws_ingest", module_path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None

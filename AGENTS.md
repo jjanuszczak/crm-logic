@@ -386,25 +386,25 @@ When reviewing PRs or script changes:
 ## Important Scripts
 
 ### Core record creation and lifecycle
-- `.gemini/skills/crm-lead-manager/SKILL.md`
+- `.agents/skills/crm-lead-manager/SKILL.md`
 - `scripts/organization_manager.py`
 - `scripts/account_manager.py`
 - `scripts/contact_manager.py`
 - `scripts/deal_manager.py`
 - `scripts/task_manager.py`
-- `.gemini/skills/crm-lead-manager/scripts/lead_manager.py`
+- `.agents/skills/crm-lead-manager/scripts/lead_manager.py`
 - `scripts/inbox_manager.py`
 - `scripts/record_manager.py`
-- `.gemini/skills/crm-opportunity-manager/scripts/opportunity_manager.py`
+- `.agents/skills/crm-opportunity-manager/scripts/opportunity_manager.py`
 
 ### Derived views and intelligence
-- `.gemini/skills/update-dashboard/scripts/update-dashboard.py`
+- `.agents/skills/update-dashboard/scripts/update-dashboard.py`
 - `scripts/intelligence-engine.py`
 - `scripts/relationship_memory.py`
 - `scripts/matchmaker.py`
 
 ### Workspace sync
-- `.gemini/skills/crm-ingest-gws/scripts/ingest.py`
+- `.agents/skills/crm-ingest-gws/scripts/ingest.py`
 - the same script also orchestrates the post-ingest CRM-labeled Drive, Granola, and WhatsApp passes
 
 ### Recent migration helpers
@@ -443,7 +443,7 @@ Most relevant skills:
 - `matchmaker`
 - `manage-intelligence`
 
-Skill definitions live in `.gemini/skills/*/SKILL.md`.
+Skill definitions live in `.agents/skills/*/SKILL.md`.
 
 ## Examples And Docs
 
