@@ -113,9 +113,13 @@ def update_frontmatter(file_path, new_data):
     try:
         frontmatter, body = load_frontmatter_file(file_path)
     except Exception:
-        return
+        return False
+    changed_keys = [key for key, value in new_data.items() if frontmatter.get(key) != value]
+    if not any(key != "date-modified" for key in changed_keys):
+        return False
     frontmatter.update(new_data)
     write_frontmatter_file(file_path, frontmatter, body)
+    return True
 
 
 def parse_date(value):
@@ -449,11 +453,15 @@ def main():
             "warmth-status": entry["status"],
             "velocity-score": entry["hits_last_7_days"],
             "account-warmth-index": account_index,
-            "date-modified": date.today().strftime("%Y-%m-%d"),
         }
         if entry["last_contacted"]:
             payload["last-contacted"] = entry["last_contacted"].strftime("%Y-%m-%d")
-        update_frontmatter(record["file_path"], payload)
+
+        # date-modified records a real CRM or telemetry change. Do not touch it
+        # merely because the intelligence refresh ran again today.
+        if any(frontmatter.get(key) != value for key, value in payload.items()):
+            payload["date-modified"] = date.today().strftime("%Y-%m-%d")
+            update_frontmatter(record["file_path"], payload)
 
     warmest_rows = []
     warmest_candidates = [
