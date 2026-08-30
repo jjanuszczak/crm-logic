@@ -17,6 +17,7 @@ DEALS_DIR = os.path.join(CRM_DATA_PATH, "Deal-Flow")
 CONTACTS_DIR = os.path.join(CRM_DATA_PATH, "Contacts")
 ACCOUNTS_DIR = os.path.join(CRM_DATA_PATH, "Accounts")
 OPPORTUNITIES_DIR = os.path.join(CRM_DATA_PATH, "Opportunities")
+ORGANIZATIONS_DIR = os.path.join(CRM_DATA_PATH, "Organizations")
 
 
 def ensure_dirs():
@@ -75,12 +76,14 @@ def cmd_create(args):
     founder_paths = [resolve_record_path(CONTACTS_DIR, CRM_DATA_PATH, value, "Contact") for value in args.founder_contacts]
     account_paths = [resolve_record_path(ACCOUNTS_DIR, CRM_DATA_PATH, value, "Account") for value in args.related_accounts]
     opportunity_paths = [resolve_record_path(OPPORTUNITIES_DIR, CRM_DATA_PATH, value, "Opportunity") for value in args.related_opportunities]
+    organization_path = resolve_record_path(ORGANIZATIONS_DIR, CRM_DATA_PATH, args.organization, "Organization") if args.organization else None
 
     today = date.today().strftime("%Y-%m-%d")
     frontmatter = {
         "id": f"deal-{slug}",
         "startup-name": args.name,
         "owner": args.owner,
+        "organization": link_for_path(organization_path, CRM_DATA_PATH) if organization_path else "",
         "sector": args.sector or "",
         "fundraising-stage": args.fundraising_stage or "",
         "coverage-status": args.coverage_status,
@@ -107,7 +110,7 @@ def cmd_create(args):
         title=args.name,
         path=file_path,
         source=args.source,
-        related=frontmatter["founder-contacts"] + frontmatter["related-accounts"] + frontmatter["related-opportunities"],
+        related=[frontmatter["organization"]] + frontmatter["founder-contacts"] + frontmatter["related-accounts"] + frontmatter["related-opportunities"],
         details=f"fundraising-stage={args.fundraising_stage or ''}; coverage-status={args.coverage_status}",
         crm_data_path=CRM_DATA_PATH,
     )
@@ -124,6 +127,9 @@ def cmd_update(args):
 
     if args.name:
         frontmatter["startup-name"] = args.name
+    if args.organization is not None:
+        organization_path = resolve_record_path(ORGANIZATIONS_DIR, CRM_DATA_PATH, args.organization, "Organization") if args.organization else None
+        frontmatter["organization"] = link_for_path(organization_path, CRM_DATA_PATH) if organization_path else ""
     if args.sector is not None:
         frontmatter["sector"] = args.sector
     if args.fundraising_stage is not None:
@@ -203,7 +209,7 @@ def cmd_update(args):
         title=frontmatter.get("startup-name", load_display_name(path)),
         path=path,
         source=frontmatter.get("source", ""),
-        related=frontmatter.get("founder-contacts", []) + frontmatter.get("related-accounts", []) + frontmatter.get("related-opportunities", []),
+        related=[frontmatter.get("organization", "")] + frontmatter.get("founder-contacts", []) + frontmatter.get("related-accounts", []) + frontmatter.get("related-opportunities", []),
         details="updated deal metadata/body",
         crm_data_path=CRM_DATA_PATH,
     )
@@ -217,6 +223,7 @@ def build_parser():
     create_parser = subparsers.add_parser("create", help="Create a Deal record in Deal-Flow/.")
     create_parser.add_argument("--name", required=True)
     create_parser.add_argument("--owner", default="john")
+    create_parser.add_argument("--organization")
     create_parser.add_argument("--sector")
     create_parser.add_argument("--fundraising-stage")
     create_parser.add_argument("--coverage-status", default="active")
@@ -246,6 +253,7 @@ def build_parser():
     update_parser = subparsers.add_parser("update", help="Update a Deal record.")
     update_parser.add_argument("deal")
     update_parser.add_argument("--name")
+    update_parser.add_argument("--organization")
     update_parser.add_argument("--sector")
     update_parser.add_argument("--fundraising-stage")
     update_parser.add_argument("--coverage-status")

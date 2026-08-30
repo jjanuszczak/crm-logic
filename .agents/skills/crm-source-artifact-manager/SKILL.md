@@ -33,6 +33,9 @@ This skill owns the workflow question:
    - Keep the external system as the artifact store.
    - Keep the CRM as the canonical control plane.
    - Use one `Source Artifact` for one external artifact whenever possible.
+   - Model a repository, Drive folder, wiki, or agent brain as a source hub using `source-type` `repository`, `workspace`, `knowledge-base`, or `folder`.
+   - Link a source hub to its primary business context and any other material records through `secondary-links`; this gives every linked entity zero, one, or many source hubs without copying URLs into entity records.
+   - Use `container-source-artifact` to place a child document, deck, model, or note inside its source hub. Preserve `local-path` only as a convenience locator and use `revision` for a commit, source version, or dated snapshot when evidence must be reproducible.
    - Use `Note` for durable interpretation, not `Source Artifact`.
 
 4. **Preserve repo policy**

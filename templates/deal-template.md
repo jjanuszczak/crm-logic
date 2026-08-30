@@ -2,6 +2,7 @@
 id: "deal-{{startup-name}}"
 startup-name: "String"
 owner: "{{Owner}}"
+organization: "[[Organizations/{{Organization Link}}]]"
 sector: "Fintech" | "Energy" | "SaaS" | "Healthtech"
 fundraising-stage: "Pre-seed" | "Seed" | "Series A" | "Series B"
 coverage-status: "active" | "parked" | "closed" | "passed"

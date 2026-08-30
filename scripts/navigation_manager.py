@@ -321,7 +321,7 @@ def record_related(record, crm_data_path):
         "Opportunities": ["organization", "account", "primary-contact", "deal", "source-lead"],
         "Engagements": ["organization", "account", "source-opportunity", "primary-contact"],
         "Workstreams": ["engagement", "organization", "account"],
-        "Source-Artifacts": ["primary-parent", "secondary-links", "summary-note"],
+        "Source-Artifacts": ["primary-parent", "secondary-links", "summary-note", "container-source-artifact"],
         "Retainers": ["engagement"],
         "Invoices": ["engagement", "workstream", "retainer"],
         "Payments": ["invoice", "engagement"],
@@ -329,7 +329,7 @@ def record_related(record, crm_data_path):
         "Notes": ["primary-parent", "secondary-links", "evidence-links", "derived-from"],
         "Tasks": ["primary-parent", "account", "contact", "opportunity", "engagement", "workstream", "lead"],
         "Inbox": [],
-        "Deal-Flow": ["founder-contacts", "related-accounts", "related-opportunities"],
+        "Deal-Flow": ["organization", "founder-contacts", "related-accounts", "related-opportunities"],
     }
     for key in relation_map.get(directory_name, []):
         value = frontmatter.get(key)

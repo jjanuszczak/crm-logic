@@ -185,6 +185,66 @@ class SourceArtifactManagerTests(unittest.TestCase):
         with self.assertRaisesRegex(FileExistsError, "matching external-id slug already exists"):
             manager.cmd_create_readwise(duplicate_args)
 
+    def test_create_repository_hub_and_child_artifact(self):
+        self.write_workstream()
+        manager = self.load_manager()
+        with contextlib.redirect_stdout(io.StringIO()):
+            manager.cmd_create(
+                types.SimpleNamespace(
+                    primary_parent_type="workstream",
+                    primary_parent="Workstreams/board-deck-refresh",
+                    title="Acme working repository",
+                    secondary_links=[],
+                    source_system="github",
+                    source_type="repository",
+                    url="https://github.com/acme/brain",
+                    external_id="acme/brain",
+                    container_source_artifact=None,
+                    local_path="/workspace/acme-brain",
+                    revision="abc123",
+                    confidentiality="internal-only",
+                    status="active",
+                    summary_note=None,
+                    summary="Canonical project workspace.",
+                    usage_context="Use for delivery context.",
+                    review_notes="",
+                    owner="john",
+                    source="manual",
+                    source_ref="git:acme/brain@abc123",
+                    last_reviewed="2026-06-28",
+                )
+            )
+            manager.cmd_create(
+                types.SimpleNamespace(
+                    primary_parent_type="workstream",
+                    primary_parent="Workstreams/board-deck-refresh",
+                    title="Acme investor deck",
+                    secondary_links=[],
+                    source_system="github",
+                    source_type="slides",
+                    url="https://github.com/acme/brain/blob/abc123/deck.pptx",
+                    external_id="acme/brain:deck.pptx",
+                    container_source_artifact="Source-Artifacts/acme-working-repository",
+                    local_path="",
+                    revision="abc123",
+                    confidentiality="internal-only",
+                    status="active",
+                    summary="Investor deck.",
+                    usage_context="Use for investor conversations.",
+                    review_notes="",
+                    summary_note=None,
+                    owner="john",
+                    source="manual",
+                    source_ref="git:acme/brain@abc123:deck.pptx",
+                    last_reviewed="2026-06-28",
+                )
+            )
+
+        child_path = self.crm_data_path / "Source-Artifacts" / "acme-investor-deck.md"
+        frontmatter, _body = load_frontmatter_file(str(child_path))
+        self.assertEqual(frontmatter["container-source-artifact"], "[[Source-Artifacts/acme-working-repository]]")
+        self.assertEqual(frontmatter["revision"], "abc123")
+
     def test_create_readwise_from_cli_document_id_fetches_reader_document(self):
         self.write_workstream()
         manager = self.load_manager()

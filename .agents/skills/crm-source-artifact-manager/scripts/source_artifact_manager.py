@@ -19,8 +19,8 @@ from lead_manager import get_crm_data_path  # noqa: E402
 from navigation_manager import record_mutation  # noqa: E402
 
 
-VALID_SOURCE_SYSTEMS = {"google-drive", "readwise", "granola", "gmail", "url", "local-file", "other"}
-VALID_SOURCE_TYPES = {"doc", "sheet", "slides", "pdf", "folder", "article", "book", "podcast", "meeting-note", "email-thread", "video", "other"}
+VALID_SOURCE_SYSTEMS = {"google-drive", "github", "local-filesystem", "readwise", "granola", "gmail", "url", "local-file", "other"}
+VALID_SOURCE_TYPES = {"doc", "sheet", "slides", "pdf", "folder", "repository", "workspace", "knowledge-base", "article", "book", "podcast", "meeting-note", "email-thread", "video", "other"}
 VALID_CONFIDENTIALITY = {"internal-only", "client-confidential", "reusable-anonymized", "public-safe"}
 VALID_STATUSES = {"active", "archived", "superseded"}
 VALID_PARENT_TYPES = {
@@ -106,7 +106,7 @@ def normalize_links(values):
 
 
 def source_artifact_related_links(frontmatter):
-    related = [frontmatter.get("primary-parent", ""), frontmatter.get("summary-note", "")]
+    related = [frontmatter.get("primary-parent", ""), frontmatter.get("summary-note", ""), frontmatter.get("container-source-artifact", "")]
     related.extend(frontmatter.get("secondary-links", []) or [])
     return related
 
@@ -337,6 +337,7 @@ def cmd_create(args):
 
     parent_path = resolve_parent_path(args.primary_parent_type, args.primary_parent)
     summary_note_path = resolve_optional_note_path(args.summary_note)
+    container_path = resolve_record_path(SOURCE_ARTIFACTS_DIR, CRM_DATA_PATH, args.container_source_artifact, "Source Artifact") if args.container_source_artifact else None
 
     title = args.title or args.url or args.external_id or f"{args.source_system} {args.source_type}"
     artifact_slug = slugify(title)
@@ -359,10 +360,13 @@ def cmd_create(args):
             "organization | account | contact | lead | opportunity | engagement | workstream | deal | activity | note | invoice | payment | retainer": args.primary_parent_type,
             "Primary Parent": os.path.splitext(os.path.relpath(parent_path, CRM_DATA_PATH))[0],
             "Secondary Link 1": normalize_reference(args.secondary_links[0]) if args.secondary_links else os.path.splitext(os.path.relpath(parent_path, CRM_DATA_PATH))[0],
-            "google-drive | readwise | granola | gmail | url | local-file | other": args.source_system,
-            "doc | sheet | slides | pdf | folder | article | book | podcast | meeting-note | email-thread | video | other": args.source_type,
+            "google-drive | github | local-filesystem | readwise | granola | gmail | url | local-file | other": args.source_system,
+            "doc | sheet | slides | pdf | folder | repository | workspace | knowledge-base | article | book | podcast | meeting-note | email-thread | video | other": args.source_type,
             "Primary URL": args.url or "",
             "External ID": args.external_id or "",
+            "Container Source Artifact": os.path.splitext(os.path.relpath(container_path, CRM_DATA_PATH))[0] if container_path else "",
+            "Local Path": args.local_path or "",
+            "Revision": args.revision or "",
             "internal-only | client-confidential | reusable-anonymized | public-safe": args.confidentiality,
             "active | archived | superseded": args.status,
             "Summary Note": os.path.splitext(os.path.relpath(summary_note_path, CRM_DATA_PATH))[0] if summary_note_path else "",
@@ -382,6 +386,9 @@ def cmd_create(args):
     frontmatter["source-type"] = args.source_type
     frontmatter["url"] = args.url or ""
     frontmatter["external-id"] = args.external_id or ""
+    frontmatter["container-source-artifact"] = link_for_path(container_path, CRM_DATA_PATH) if container_path else ""
+    frontmatter["local-path"] = args.local_path or ""
+    frontmatter["revision"] = args.revision or ""
     frontmatter["confidentiality"] = args.confidentiality
     frontmatter["status"] = args.status
     frontmatter["summary-note"] = link_for_path(summary_note_path, CRM_DATA_PATH) if summary_note_path else ""
@@ -426,6 +433,9 @@ def cmd_create_readwise(args):
         source_type=source_type,
         url=url,
         external_id=str(payload.get("id") or payload.get("external_id") or "").strip(),
+        container_source_artifact=None,
+        local_path=None,
+        revision=None,
         confidentiality=args.confidentiality,
         status=args.status,
         summary_note=args.summary_note,
@@ -541,6 +551,9 @@ def cmd_review(args):
     print(f"Confidentiality: {frontmatter.get('confidentiality', '')}")
     print(f"URL: {frontmatter.get('url', '') or 'none'}")
     print(f"External ID: {frontmatter.get('external-id', '') or 'none'}")
+    print(f"Container: {frontmatter.get('container-source-artifact', '') or 'none'}")
+    print(f"Local Path: {frontmatter.get('local-path', '') or 'none'}")
+    print(f"Revision: {frontmatter.get('revision', '') or 'none'}")
     print(f"Summary Note: {frontmatter.get('summary-note', '') or 'none'}")
     print(f"Related Notes: {len(related_notes)}")
     print("Recommended Next Action:")
@@ -570,6 +583,9 @@ def build_parser():
     create_parser.add_argument("--source-type", required=True)
     create_parser.add_argument("--url")
     create_parser.add_argument("--external-id")
+    create_parser.add_argument("--container-source-artifact")
+    create_parser.add_argument("--local-path")
+    create_parser.add_argument("--revision")
     create_parser.add_argument("--confidentiality", default="internal-only")
     create_parser.add_argument("--status", default="active")
     create_parser.add_argument("--summary-note")

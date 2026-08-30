@@ -282,10 +282,13 @@ Canonical references to external artifacts and evidence.
 | `primary-parent-type` | Canonical | `organization`, `account`, `contact`, `lead`, `opportunity`, `engagement`, `workstream`, `deal`, `activity`, `note`, `invoice`, `payment`, `retainer` |
 | `primary-parent` | Canonical | Primary wikilink |
 | `secondary-links` | Canonical | Secondary wikilinks |
-| `source-system` | Canonical | `google-drive`, `readwise`, `granola`, `gmail`, `url`, `local-file`, `other` |
-| `source-type` | Canonical | `doc`, `sheet`, `slides`, `pdf`, `folder`, `article`, `book`, `podcast`, `meeting-note`, `email-thread`, `video`, `other` |
+| `source-system` | Canonical | `google-drive`, `github`, `local-filesystem`, `readwise`, `granola`, `gmail`, `url`, `local-file`, `other` |
+| `source-type` | Canonical | `doc`, `sheet`, `slides`, `pdf`, `folder`, `repository`, `workspace`, `knowledge-base`, `article`, `book`, `podcast`, `meeting-note`, `email-thread`, `video`, `other` |
 | `url` | Canonical | Primary external link |
 | `external-id` | Canonical | Upstream system identifier when known |
+| `container-source-artifact` | Canonical | Optional `[[Source-Artifacts/...]]` workspace, repository, or folder that contains this artifact |
+| `local-path` | Canonical | Optional machine-local checkout or filesystem location; a convenience locator, not durable identity |
+| `revision` | Canonical | Optional immutable Git commit, Drive version, or dated snapshot identifier |
 | `confidentiality` | Canonical | `internal-only`, `client-confidential`, `reusable-anonymized`, `public-safe` |
 | `status` | Canonical | `active`, `archived`, `superseded` |
 | `summary-note` | Canonical | Optional `[[Notes/...]]` |
@@ -409,6 +412,7 @@ Fundraising inventory object. Current vault path is `Deal-Flow/`.
 | `id` | Canonical | Stable machine id |
 | `startup-name` | Canonical | Display name |
 | `owner` | Canonical | Record owner |
+| `organization` | Canonical | `[[Organizations/...]]` stable company identity for the Deal |
 | `sector` | Canonical | Primary sector |
 | `fundraising-stage` | Canonical | Startup financing stage |
 | `coverage-status` | Canonical | Internal workflow status |
